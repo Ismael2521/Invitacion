@@ -104,6 +104,34 @@
         .retraso-2 { transition-delay: 0.4s; }
         .retraso-3 { transition-delay: 0.6s; }	    
 
+	/* --- BOTONES DE NAVEGACIÓN FLOTANTES --- */
+        #controles-navegacion {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .nav-btn {
+            background-color: var(--color-principal);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .nav-btn:hover {
+            transform: scale(1.05);
+            background-color: #333; /* Cambia a oscuro al pasar el mouse */
+        }
+
 </style>
 </head>
 <body>
@@ -119,7 +147,10 @@
 
     <audio id="musica-fondo" loop><source src="Song.mp3" type="audio/mpeg"></audio>
     <button class="music-btn" id="btn-play" onclick="togglePlay()">🎵</button>
-
+	<div id="controles-navegacion">
+        <button onclick="irArriba()" class="nav-btn">⬆️ Inicio</button>
+        <button onclick="irSiguiente()" class="nav-btn">Siguiente ⬇️</button>
+    </div>
     <header class="hero">
         <div class="oculto animar">
             <p>Mis XV Años</p>
@@ -299,6 +330,29 @@
             setTimeout(() => { petalo.remove(); }, duracion * 1000);
         }
         setInterval(crearPetalo, 400);
+	// --- 6. LÓGICA DE LOS BOTONES DE NAVEGACIÓN ---
+        function irArriba() {
+            // Te lleva suavemente hasta el inicio de la página
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function irSiguiente() {
+            // Selecciona la portada (header) y todas las secciones
+            const secciones = document.querySelectorAll('header, section');
+            
+            for (let i = 0; i < secciones.length; i++) {
+                // Calcula dónde está cada sección respecto a lo que estás viendo
+                const distanciaDesdeArriba = secciones[i].getBoundingClientRect().top;
+                
+                // Si la sección está por debajo de tu vista (con un margen de 50px)
+                if (distanciaDesdeArriba > 50) {
+                    // Desliza suavemente hacia esa sección y detiene el ciclo
+                    secciones[i].scrollIntoView({ behavior: 'smooth' });
+                    break;
+                }
+            }
+        }
+
     </script>
 
 </body>
