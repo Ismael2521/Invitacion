@@ -354,6 +354,15 @@
                 }
             }
         }
+  // --- 7. DETENER MÚSICA AL SALIR O MINIMIZAR ---
+        document.addEventListener("visibilitychange", function() {
+            // Si la página se oculta (cambio de pestaña, se minimiza el navegador o se bloquea el celular)
+            if (document.hidden) {
+                musica.pause();
+                btnPlay.innerHTML = "🎵"; // Regresa el ícono a Play
+                sonar = false; // Actualiza el estado de la música
+            }
+        });
 
     </script>
 
